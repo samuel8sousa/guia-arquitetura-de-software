@@ -174,6 +174,68 @@ Pagamento Service
 
 ## Arquitetura monolítica versus microsserviços
 
+A arquitetura monolítica representa uma abordagem na qual todos os componentes de
+uma aplicação são desenvolvidos, versionados e implantados como uma única unidade.
+Nesse modelo, funcionalidades como interface de usuário, regras de negócio e acesso
+a dados geralmente fazem parte do mesmo processo de execução, compartilhando o
+mesmo ciclo de desenvolvimento e implantação [@fowler2014microservices].
+
+Inicialmente, essa abordagem apresenta vantagens relacionadas à simplicidade
+operacional. Como toda a aplicação está concentrada em um único projeto, o
+desenvolvimento, os testes e a implantação possuem menor complexidade, permitindo
+que equipes pequenas construam sistemas de forma mais direta. Além disso, a
+comunicação entre os componentes ocorre dentro do mesmo processo, evitando custos
+relacionados à comunicação distribuída [@newman2015building].
+
+Entretanto, conforme uma aplicação monolítica cresce, surgem dificuldades
+relacionadas à manutenção e evolução do sistema. O aumento do tamanho do código
+pode tornar os limites entre funcionalidades menos claros, fazendo com que mudanças
+em uma determinada parte da aplicação tenham impacto em outros componentes. Dessa
+forma, uma alteração aparentemente localizada pode exigir a reconstrução, teste e
+implantação de toda a aplicação [@newman2015building].
+
+Outro desafio está relacionado à escalabilidade e à organização das equipes. Em uma
+aplicação monolítica, a escalabilidade normalmente ocorre considerando o sistema
+como um todo, mesmo quando apenas uma funcionalidade específica apresenta maior
+demanda. Além disso, equipes diferentes trabalhando sobre uma mesma base de código
+podem aumentar a necessidade de coordenação e dificultar a evolução independente de
+partes do sistema [@fowler2014microservices].
+
+A arquitetura de microsserviços surge como uma alternativa para lidar com essas
+limitações, propondo a decomposição da aplicação em um conjunto de serviços
+independentes. Cada serviço possui uma responsabilidade bem definida, sendo
+organizado em torno de uma capacidade de negócio e podendo possuir seu próprio
+ciclo de desenvolvimento, implantação e evolução [@fowler2014microservices].
+
+Essa separação permite que diferentes partes do sistema sejam modificadas e
+escaladas de forma independente. Por exemplo, em uma aplicação de comércio
+eletrônico, o serviço responsável por pagamentos pode receber maior capacidade de
+processamento sem que seja necessário escalar também os serviços de usuários ou
+produtos. Essa característica aumenta a flexibilidade da arquitetura, principalmente
+em sistemas grandes e em constante evolução [@newman2015building].
+
+A comparação entre os dois estilos pode ser observada na tabela abaixo:
+
+| Característica | Monolito | Microsserviços |
+|---|---|---|
+| Estrutura | Uma única aplicação contendo todas as funcionalidades | Conjunto de serviços independentes organizados por capacidades de negócio |
+| Implantação | Toda alteração exige a publicação da aplicação completa | Serviços podem ser implantados individualmente |
+| Escalabilidade | Escala da aplicação como um todo | Escala apenas dos serviços que necessitam de mais recursos |
+| Organização | Geralmente estruturada por camadas técnicas | Estruturada em torno de domínios e responsabilidades de negócio |
+| Desenvolvimento | Maior coordenação entre equipes no mesmo código | Equipes podem trabalhar com maior autonomia |
+| Complexidade | Menor complexidade operacional inicialmente | Maior complexidade devido à natureza distribuída |
+
+Apesar dos benefícios, a adoção de microsserviços não elimina a complexidade de um
+sistema, mas altera onde essa complexidade está localizada. Ao substituir uma
+aplicação única por diversos serviços distribuídos, surgem novos desafios
+relacionados à comunicação entre componentes, monitoramento, gerenciamento de
+falhas, consistência dos dados e operação da infraestrutura [@richardson2018microservices].
+
+Portanto, a escolha entre uma arquitetura monolítica e uma arquitetura de
+microsserviços deve considerar as características do sistema, o tamanho da equipe,
+os requisitos de evolução e os atributos de qualidade desejados. Microsserviços
+representam uma alternativa arquitetural para determinados contextos, mas não uma
+solução universal para todos os tipos de aplicações.
 
 ::: {.callout-tip}
 ## Sobre as citações

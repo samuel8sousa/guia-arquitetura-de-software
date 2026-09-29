@@ -1,45 +1,127 @@
 ---
-title: "Guia Aberto de Arquitetura de Software"
-subtitle: "Um guia colaborativo, em português, sobre como sistemas de software são estruturados — e por quê."
-toc: false
-number-sections: false
-author:
-  - name: "Prof. Matheus Barbosa"
+title: "Arquitetura de microsserviços"
+subtitle: "Estrutura, componentes e comunicação entre serviços"
+author: "Guia Aberto de Arquitetura de Software"
+lang: pt-BR
+toc: true
+number-sections: true
+format:
+  html:
+    theme: cosmo
+    code-copy: true
+    code-overflow: wrap
 ---
 
-Cada tópico deste guia é assinado por quem o escreveu — um ou mais autores identificados —, revisado por pares e sustentado por referências acadêmicas que você pode conferir. Nenhum tópico entra no site sem texto autoral, exemplo que executa, material em áudio e bibliografia rastreável.
+> Microsserviços organizam uma aplicação como uma suíte de serviços pequenos, executados em processos próprios e comunicados por mecanismos leves. O objetivo é autonomia de evolução e operação, não simplesmente aumentar o número de APIs.
 
-O material é livre para uso [com crédito aos autores](guia/sobre.qmd#licenca-e-credito).
+## Visão geral
 
-::: {.callout-note}
-## Projeto em construção aberta
-Este guia está sendo escrito agora. Tópicos aparecem aqui conforme são
-concluídos e revisados. Para escrever um, comece pelo
-[guia de contribuição](guia/contribuindo.qmd).
-:::
+Uma arquitetura de microsserviços divide o sistema por **capacidades de negócio**. Cada serviço tem uma responsabilidade coesa, um contrato explícito e controle sobre seu modelo de dados. A implantação pode ser feita de forma independente, desde que os contratos sejam compatíveis.
 
-## Tópicos
+Essa organização favorece deploys menores, escala seletiva e liberdade tecnológica. Em troca, introduz custo de rede, consistência eventual, observabilidade distribuída e novas formas de falha.
 
-### [00 — Tópico modelo](content/00-modelo/index.qmd)
+## Estrutura da arquitetura
 
-Referência de estrutura e profundidade esperada. Copie esta pasta para começar um
-tópico novo.
+![Arquitetura de referência: clientes, gateway, serviços, broker e discovery.](assets/imagens/arquitetura-microsservicos.svg){#fig-arquitetura fig-align="center"}
 
-**Formatos:** texto · jupyter notebook · áudio · gem · slides
+### Componentes
 
-## O que cada tópico entrega
+| Componente | Papel | Decisões importantes |
+|---|---|---|
+| Clientes | Web, mobile ou sistemas externos | contrato público e autenticação |
+| API Gateway | ponto de entrada e proxy reverso | roteamento, BFF e limites |
+| Microsserviço | capacidade de negócio autônoma | fronteira, contrato e ciclo de vida |
+| Banco por serviço | persistência sob responsabilidade do serviço | isolamento de schema e consistência |
+| Broker / Event Bus | transporte de mensagens | tópicos, filas, retenção e retry |
+| Service Discovery | resolução de nomes para instâncias | registro, health checks e balanceamento |
+| Observabilidade | visão do comportamento distribuído | logs, métricas e traces |
 
-| Formato | O que é |
+O princípio “banco por serviço” não exige um produto de banco diferente para cada serviço. Exige que outros serviços não leiam ou escrevam diretamente no modelo interno daquele serviço. A integração ocorre por API ou evento.
+
+## Como decompor o sistema
+
+Comece pelo domínio, não pela infraestrutura:
+
+1. liste capacidades e fluxos de negócio;
+2. agrupe regras que mudam juntas;
+3. defina o que cada serviço possui e o que ele não conhece;
+4. publique contratos pequenos e orientados a casos de uso;
+5. valide fronteiras com cenários de mudança e falha.
+
+Um serviço não precisa ser minúsculo: precisa ser coeso, autônomo e operável. Uma decomposição que exige chamadas síncronas em cadeia para qualquer operação provavelmente criou fronteiras artificiais.
+
+## Comunicação entre serviços
+
+Há dois eixos úteis: **síncrono ou assíncrono** (o consumidor espera ou processa depois) e **um receptor ou vários** (destinatário único ou assinantes). Em sistemas reais, os estilos convivem.
+
+A recomendação é manter o caminho síncrono curto e usar eventos para propagar fatos que não precisam bloquear a resposta original. A [documentação da Microsoft sobre comunicação em microsserviços](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/communication-in-microservice-architecture) descreve HTTP/HTTPS, REST e mensageria como combinações comuns.
+
+## APIs REST
+
+REST sobre HTTP é apropriado para consultas e comandos que precisam de resposta rápida:
+
+- `GET /produtos/{id}` consulta um recurso;
+- `POST /pedidos` cria uma intenção de pedido;
+- códigos HTTP, payloads e erros formam parte do contrato;
+- OpenAPI documenta, valida e ajuda a gerar clientes.
+
+Para reduzir acoplamento, prefira contratos orientados a recursos, versionamento compatível e idempotência onde houver retry. Defina timeout em toda chamada remota; retry sem limite pode transformar uma falha local em uma tempestade.
+
+### O risco da cadeia síncrona
+
+`Gateway → Pedidos → Pagamento → Estoque → Notificações` multiplica latência e pontos de falha. Se uma etapa puder acontecer depois, publique `PedidoCriado` e responda com um estado explícito, como `PROCESSANDO`.
+
+## Mensageria e eventos
+
+Mensageria permite trocar mensagens por filas ou tópicos sem manter os serviços conectados durante todo o processamento. Um produtor publica um evento; consumidores independentes reagem a ele.
+
+![Comparação entre chamada síncrona com discovery e evento assíncrono.](assets/imagens/comunicacao-e-discovery.svg){#fig-comunicacao fig-align="center"}
+
+Use mensageria para processamento demorado, integração com múltiplos consumidores, absorção de picos e propagação de mudanças. Inclua identificador de correlação, versão do evento, chave de ordenação quando necessária, consumidor idempotente, retry e fila de mensagens não processáveis.
+
+## API Gateway
+
+O API Gateway é uma entrada controlada entre clientes e serviços. Pode terminar TLS, autenticar, aplicar limites, rotear versões, agregar respostas e adaptar o contrato para um cliente — o padrão **Backend for Frontend (BFF)**.
+
+Ele reduz o acoplamento do cliente à topologia interna, mas não deve concentrar regras de negócio. Monitore sua latência, disponibilidade e comportamento sob falha. A [referência da Azure sobre API gateways](https://learn.microsoft.com/en-us/azure/architecture/microservices/design/gateway) detalha autenticação, SSL, mTLS, rate limiting e roteamento.
+
+## Service Discovery
+
+Em ambientes com containers, réplicas podem surgir, desaparecer e mudar de endereço. Service Discovery resolve um nome lógico — por exemplo, `pedidos` — para instâncias disponíveis (`host`, porta e metadados), normalmente com health checks e expiração de registros.
+
+Há duas formas: **client-side discovery**, em que o cliente consulta o registry, e **server-side discovery**, em que gateway, proxy ou load balancer faz a consulta. O segundo modelo esconde a topologia dos clientes e combina com um gateway. Veja o padrão [Server-side service discovery](https://microservices.io/patterns/server-side-discovery.html).
+
+Discovery não substitui resiliência: chamadas ainda precisam de timeout, retry limitado, circuit breaker e fallback quando fizer sentido.
+
+## Critérios de decisão
+
+| Pergunta | Preferência inicial |
 |---|---|
-| **Texto autoral** | Explicação em formato científico, com trade-offs e critérios de decisão |
-| **Notebook** | Exemplo executável no Colab ou Jupyter que demonstra o conceito em código |
-| **Áudio** | Episódio gerado no NotebookLM a partir do próprio texto e das próprias fontes |
-| **Gem** | Tutor de IA configurado sobre o conteúdo do tópico, com link público |
-| **Slides** | Apresentação de 20 minutos, derivada do mesmo texto |
-| **Referências** | Bibliografia no padrão IEEE, com fontes originais e DOI |
+| O consumidor precisa do resultado nesta interação? | HTTP/REST síncrono |
+| O trabalho é demorado ou pode terminar depois? | fila ou evento assíncrono |
+| Existem vários interessados em uma mudança? | publish/subscribe |
+| Há vários tipos de cliente? | gateway ou BFF por experiência |
+| As instâncias mudam dinamicamente? | registry + health checks |
+| A chamada pode falhar ou atrasar? | timeout, retry limitado, circuit breaker e trace |
 
-## Como este site é feito
+A [arquitetura de microsserviços da Azure](https://learn.microsoft.com/en-us/azure/architecture/microservices/) reforça que APIs, mensageria, isolamento de dados, gateway, observabilidade e orquestração devem ser considerados em conjunto.
 
-O conteúdo é escrito uma vez, em Markdown, e os formatos derivam da mesma fonte. As citações `[1]`, `[2]` são geradas a partir de arquivos BibTeX, então nunca saem de sincronia com a bibliografia.
+## Checklist de projeto
 
+- Cada serviço tem uma capacidade de negócio clara?
+- O serviço possui seus dados e suas migrações?
+- O contrato é versionado e testado fora do processo?
+- Chamadas síncronas têm timeout e limites?
+- Eventos têm schema, versão, retry e idempotência?
+- O gateway não contém regra de domínio?
+- Discovery conhece apenas instâncias saudáveis?
+- Logs, métricas e traces atravessam gateway, broker e serviços?
+- É possível implantar e reverter um serviço sem reconstruir os demais?
 
+## Referências
+
+1. Microsoft Learn. [Communication in a microservice architecture](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/communication-in-microservice-architecture).
+2. Microsoft Learn. [Microservices architecture style](https://learn.microsoft.com/en-us/azure/architecture/microservices/).
+3. Richardson, C. [API Gateway / Backends for Frontends](https://microservices.io/patterns/apigateway).
+4. Richardson, C. [Server-side service discovery](https://microservices.io/patterns/server-side-discovery.html).
+5. Fowler, M. [Microservices](https://martinfowler.com/articles/microservices.html).

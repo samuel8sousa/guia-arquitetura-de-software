@@ -1,25 +1,26 @@
 ---
-title: "Tópico modelo"
-subtitle: "Estrutura e profundidade esperadas de uma contribuição"
+title: "Microsserviços"
+subtitle: "Arquitetura baseada em serviços independentes e distribuídos"
 author:
-  - name: "Nome Completo do Autor"
+  - name: "Agdo José Samuel Sousa de oliveira"
   - name: "Nome Completo da Segunda Autora"
-date: 2026-08-30
+date: 2026-09-30
 date-modified: last-modified
 bibliography: referencias.bib
 citation:
   type: webpage
   container-title: "Guia Aberto de Arquitetura de Software"
 license: "CC BY-NC 4.0"
-keywords: ["palavra-chave", "keyword"]
+keywords: ["microsserviços", "arquitetura de software","sistemas distribuídos"]
 ---
 
 ::: {.meta-topico}
 <dl>
 <dt>Competências</dt>
-<dd>Avaliar quando um estilo arquitetural é adequado ao problema</dd>
+<dd>Avaliar a utilização da arquitetura de microsserviços considerando requisitos,
+trade-offs e características do sistema.</dd>
 <dt>Pré-requisitos</dt>
-<dd>Nenhum</dd>
+<dd>Conceitos básicos de arquitetura de software e sistemas distribuídos.</dd>
 <dt>Formatos</dt>
 <dd>
 [texto]{.formato} [notebook](notebook.ipynb){.formato} [áudio]{.formato} [gem]{.formato} [slides](slides.qmd){.formato}
@@ -37,20 +38,142 @@ renomeie para `content/NN-seu-topico/` e substitua tudo — inclusive
 
 ## Definição e contexto
 
-Abra definindo o conceito com precisão, em uma ou duas frases, antes de qualquer
-digressão histórica. O leitor que chegou aqui de uma busca precisa saber em dez
-segundos se está na página certa.
+A arquitetura de microsserviços é um estilo arquitetural baseado na construção de sistemas 
+como um conjunto de pequenos serviços independentes, cada um responsável por uma capacidade
+específica do negócio e executado de forma autônoma. Esses serviços colaboram entre si por
+meio de interfaces bem definidas, permitindo que sejam desenvolvidos, implantados e 
+evoluídos de maneira independente [@newman2015building]. Newman define microsserviços como 
+serviços pequenos e autônomos que trabalham em conjunto, enfatizando a existência 
+de ciclos de vida próprios para cada serviço e a organização desses componentes em torno 
+de domínios de negócio.
 
-Depois, situe o problema. Todo estilo arquitetural existe porque alguma
-dificuldade concreta apareceu antes dele: acoplamento excessivo, impossibilidade
-de evoluir partes independentes, custo de coordenação entre equipes. Nomeie essa
-dificuldade. Um texto que apresenta a solução sem apresentar o problema ensina a
-decorar, não a decidir.
+O surgimento dessa abordagem está relacionado aos desafios encontrados no desenvolvimento e manutenção
+de sistemas monolíticos de grande escala. À medida que aplicações crescem, torna-se
+comum o aumento do acoplamento entre componentes, dificultando alterações isoladas, 
+evolução independente de funcionalidades e a atuação de equipes diferentes sobre o mesmo 
+código. Newman destaca que sistemas monolíticos extensos podem tornar difícil identificar onde uma 
+mudança deve ser realizada, pois funcionalidades relacionadas acabam espalhadas pelo código, 
+aumentando a dificuldade de manutenção e evolução.
 
-O critério de decomposição modular proposto por Parnas [@parnas1972modularization]
-é um bom exemplo de como uma decisão arquitetural nasce de um problema observado:
-a dificuldade de modificar sistemas cujos módulos foram divididos por etapas de
-processamento em vez de por informação escondida.
+Esse problema pode ser compreendido como uma dificuldade de decomposição adequada do 
+sistema. Quando os módulos são organizados de forma inadequada, mudanças em uma parte da 
+aplicação podem gerar impactos inesperados em outras partes, aumentando a dependência 
+entre componentes. Nesse contexto, a arquitetura de microsserviços busca criar fronteiras 
+mais claras entre responsabilidades, permitindo que cada serviço possua um limite bem 
+definido e possa evoluir sem depender diretamente dos demais. Newman destaca que os limites 
+dos microsserviços devem ser orientados por fronteiras de negócio, evitando que um serviço 
+cresça excessivamente e volte a concentrar responsabilidades.
+
+Essa preocupação com a forma de dividir sistemas já era discutida por Parnas (1972), ao 
+propor critérios para decomposição modular. O autor argumenta que uma boa divisão de 
+módulos não deve ser baseada apenas na sequência de processamento das informações, mas 
+principalmente na separação de decisões de projeto que precisam permanecer ocultas dentro 
+dos módulos. Dessa forma, mudanças internas em um módulo não devem exigir alterações nos 
+demais componentes do sistema.
+
+Assim, a arquitetura de microsserviços pode ser entendida como uma evolução das 
+práticas de modularização, aplicando a ideia de isolamento de responsabilidades em 
+uma escala maior. Enquanto módulos tradicionais buscam reduzir dependências dentro de 
+uma aplicação, microsserviços utilizam fronteiras independentes de execução para permitir 
+maior autonomia de desenvolvimento, implantação e evolução do sistema.
+
+## Conceitos fundamentais de microsserviços
+Serviços pequenos e autônomos
+A arquitetura de microsserviços organiza uma aplicação como um conjunto de serviços 
+pequenos e independentes, cada um responsável por uma capacidade específica do negócio. 
+Esses serviços possuem seu próprio processo de execução e podem ser desenvolvidos, testados, 
+implantados e evoluídos de forma independente dos demais componentes do sistema [@newman2015building].
+
+
+Diferentemente de uma aplicação monolítica, onde todas as funcionalidades fazem parte 
+de uma única unidade de implantação, os microsserviços estabelecem limites claros 
+entre as partes do sistema. Essa separação permite que alterações realizadas em um 
+serviço específico tenham menor impacto sobre os demais serviços da aplicação [@newman2015building].
+
+Organização por capacidades de negócio
+
+Um princípio fundamental dos microsserviços é que os serviços devem ser organizados em 
+torno de capacidades de negócio, e não separados apenas por características técnicas da aplicação.
+Por exemplo, em vez de dividir uma aplicação em equipes ou componentes como "interface", "banco de dados" e "lógica de aplicação", 
+a arquitetura busca criar serviços relacionados ao domínio do problema:
+
+Cliente Service
+
+Pedido Service
+
+Pagamento Service
+
+Estoque Service
+
+Essa abordagem reduz dependências entre equipes e permite que cada serviço tenha 
+responsabilidade sobre uma parte específica do negócio. Fowler e Lewis destacam que os 
+microsserviços são construídos em torno de funcionalidades de negócio e podem ser 
+gerenciados por equipes diferentes [@fowler2014microservices].
+
+
+Autonomia dos serviços
+A autonomia é uma característica central dos microsserviços. Cada serviço deve possuir 
+controle sobre seu próprio ciclo de desenvolvimento e implantação, permitindo que equipes 
+diferentes trabalhem e entreguem mudanças sem depender de uma coordenação constante com 
+outras partes do sistema [@newman2015building].
+
+Essa autonomia envolve:
+- código independente;
+- implantação independente;
+- evolução independente;
+- responsabilidade clara sobre uma capacidade do sistema.
+Entretanto, Richardson destaca que essa autonomia traz desafios, pois a aplicação deixa de 
+ser um único processo e passa a ser um sistema distribuído, exigindo mecanismos para lidar 
+com comunicação, falhas e consistência dos dados [@richardson2018microservices].
+
+Comunicação entre serviços
+Em uma arquitetura de microsserviços, os serviços precisam colaborar para executar 
+funcionalidades completas da aplicação. Essa comunicação ocorre por meio de mecanismos 
+leves, geralmente utilizando APIs ou sistemas de mensagens.
+
+Segundo Fowler e Lewis, os serviços comunicam-se utilizando mecanismos simples, 
+frequentemente utilizando recursos HTTP, mantendo baixo acoplamento entre os componentes [@fowler2014microservices].
+
+Essa comunicação permite que cada serviço permaneça independente, mas introduz novos 
+desafios relacionados à latência, disponibilidade e tratamento de falhas.
+
+Independência de implantação
+Uma das principais características dos microsserviços é a capacidade de realizar 
+implantação independente. Em uma aplicação monolítica, uma alteração normalmente exige a 
+construção e implantação de todo o sistema. Já em microsserviços, uma alteração em 
+determinado serviço pode ser publicada sem necessariamente modificar ou implantar os demais 
+componentes [@fowler2014microservices].
+
+Essa característica favorece:
+- entregas menores e frequentes;
+- redução do impacto de mudanças;
+- equipes trabalhando em diferentes partes do sistema.
+
+Banco de dados por serviço
+Um conceito frequentemente associado aos microsserviços é que cada serviço deve ser 
+responsável pelos seus próprios dados. Essa abordagem evita que 
+diferentes serviços dependam diretamente do mesmo 
+banco de dados, reduzindo o acoplamento entre componentes.
+Richardson apresenta o padrão Database per Service, no qual cada serviço possui 
+controle sobre sua própria persistência, permitindo maior autonomia tecnológica e evolução 
+independente [@richardson2018microservices].
+
+Usuário Service
+       |
+ Banco Usuários
+
+
+Pedido Service
+       |
+ Banco Pedidos
+
+
+Pagamento Service
+       |
+ Banco Pagamentos
+
+## Arquitetura monolítica versus microsserviços
+
 
 ::: {.callout-tip}
 ## Sobre as citações

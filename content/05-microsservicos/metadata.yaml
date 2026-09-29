@@ -1,13 +1,13 @@
 # Metadados do tópico — preencha tudo. O CI valida os campos obrigatórios.
 # Este arquivo também alimenta a indexação por ferramentas de IA.
 
-numero: "00"
-slug: "modelo"
-titulo: "Tópico modelo"
-subtitulo: "Estrutura e profundidade esperadas de uma contribuição"
+numero: "05"
+slug: "microsservicos"
+titulo: "Arquitetura de microsserviços"
+subtitulo: "Estrutura, componentes e comunicação entre serviços"
 resumo: >-
-  Descreva o tópico em 2 ou 3 frases, como um abstract. Este texto aparece no
-  cartão da home e nos metadados Open Graph.
+  Explica como organizar microsserviços, escolher comunicação REST ou mensageria,
+  usar API Gateway e localizar instâncias com Service Discovery.
 
 # Um tópico pode ter vários autores — liste um item por pessoa, na ordem em que
 # devem ser creditados. Todos entram no crédito, na citação e na lista de
@@ -22,7 +22,7 @@ autores:
     github: "outro-usuario-github"
     orcid: ""
 
-status: "modelo"        # rascunho | em-revisao | publicado | modelo
+status: "rascunho"        # rascunho | em-revisao | publicado | modelo
 data_criacao: "2026-08-30"
 ultima_revisao: "2026-08-30"
 revisado_por:
@@ -31,12 +31,12 @@ revisado_por:
 
 # Estrutura pedagógica
 competencias:
-  - "Descreva em forma de verbo + objeto o que o leitor consegue fazer depois"
-  - "Ex: avaliar quando a decomposição em camadas prejudica desempenho"
+  - "Explicar a organização e os componentes de uma arquitetura de microsserviços"
+  - "Selecionar comunicação REST, mensageria, gateway e discovery conforme o contexto"
 nivel_bloom: ["compreender", "analisar"]   # lembrar|compreender|aplicar|analisar|avaliar|criar
 pre_requisitos: []                          # slugs de outros tópicos
 topicos_relacionados: []
-palavras_chave: ["palavra-chave", "keyword em inglês"]
+palavras_chave: ["microsserviços", "REST", "mensageria", "API Gateway", "Service Discovery"]
 
 # Formatos entregues — o CI verifica a existência do que está marcado como true
 formatos:

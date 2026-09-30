@@ -3,7 +3,7 @@ title: "Microsserviços"
 subtitle: "Arquitetura baseada em serviços independentes e distribuídos"
 author:
   - name: "Agdo José Samuel Sousa de oliveira"
-  - name: "Nome Completo da Segunda Autora"
+  - name: "Antonio Carlos Verissimo de Souza"
 date: 2026-09-30
 date-modified: last-modified
 bibliography: referencias.bib
@@ -450,10 +450,19 @@ de recomendações vagas.
 
 **Considere usar quando:**
 
-- A condição concreta que torna esse estilo adequado
-- Outra condição
+- Sistema grande e domínio complexo
+- Necessidade de releases frequentes e independentes por área.
+- Partes do sistema escalam de formas muito diferentes.
+- Múltiplos times que precisam de autonomia real.
+- Infraestrutura madura: CI/CD, containers, observabilidade.
 
 **Evite quando:**
+
+- Time pequeno ou produto em estágio inicial.
+- Domínio fortemente acoplado, com dados entrelaçados.
+- Sem cultura e ferramentas de DevOps.
+- Requisitos fortes de consistência imediata entre módulos.
+- Adoção por moda, sem dor real de negócio.
 
 - A condição em que o custo supera o benefício
 - Outra condição

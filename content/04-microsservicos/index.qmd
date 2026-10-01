@@ -4,6 +4,9 @@ subtitle: "Arquitetura baseada em serviços independentes e distribuídos"
 author:
   - name: "Agdo José Samuel Sousa de oliveira"
   - name: "Antonio Carlos Verissimo de Souza"
+  - name: "Pedro Henrique Borges Silva"
+  - name: "Felipe dos Santos Silva"
+  - name: "Antonio Pedro Guimarães Santos de Macedo"
 date: 2026-09-30
 date-modified: last-modified
 bibliography: referencias.bib
@@ -28,14 +31,6 @@ trade-offs e características do sistema.</dd>
 </dl>
 :::
 
-::: {.callout-note}
-## Como usar esta página
-Esta é a página modelo do projeto. A estrutura abaixo é obrigatória; o conteúdo é
-ilustrativo e deve ser substituído. Copie a pasta `content/00-modelo/` inteira,
-renomeie para `content/NN-seu-topico/` e substitua tudo — inclusive
-`metadata.yaml`, `referencias.bib`, etc.
-:::
-
 ## Definição e contexto
 
 A arquitetura de microsserviços é um estilo arquitetural baseado na construção de sistemas 
@@ -53,18 +48,18 @@ comum o aumento do acoplamento entre componentes, dificultando alterações isol
 evolução independente de funcionalidades e a atuação de equipes diferentes sobre o mesmo 
 código. Newman destaca que sistemas monolíticos extensos podem tornar difícil identificar onde uma 
 mudança deve ser realizada, pois funcionalidades relacionadas acabam espalhadas pelo código, 
-aumentando a dificuldade de manutenção e evolução.
+aumentando a dificuldade de manutenção e evolução [@newman2015building].
 
 Esse problema pode ser compreendido como uma dificuldade de decomposição adequada do 
 sistema. Quando os módulos são organizados de forma inadequada, mudanças em uma parte da 
 aplicação podem gerar impactos inesperados em outras partes, aumentando a dependência 
 entre componentes. Nesse contexto, a arquitetura de microsserviços busca criar fronteiras 
 mais claras entre responsabilidades, permitindo que cada serviço possua um limite bem 
-definido e possa evoluir sem depender diretamente dos demais. Newman destaca que os limites 
+definido e possa evoluir sem depender diretamente dos demais[@newman2015building]. Newman destaca que os limites 
 dos microsserviços devem ser orientados por fronteiras de negócio, evitando que um serviço 
-cresça excessivamente e volte a concentrar responsabilidades.
+cresça excessivamente e volte a concentrar responsabilidades[@newman2015building].
 
-Essa preocupação com a forma de dividir sistemas já era discutida por Parnas (1972), ao 
+Essa preocupação com a forma de dividir sistemas já era discutida por Parnas [@parnas1972modularization], ao 
 propor critérios para decomposição modular. O autor argumenta que uma boa divisão de 
 módulos não deve ser baseada apenas na sequência de processamento das informações, mas 
 principalmente na separação de decisões de projeto que precisam permanecer ocultas dentro 
@@ -78,7 +73,9 @@ uma aplicação, microsserviços utilizam fronteiras independentes de execução
 maior autonomia de desenvolvimento, implantação e evolução do sistema.
 
 ## Conceitos fundamentais de microsserviços
-Serviços pequenos e autônomos
+
+###Serviços pequenos e autônomos
+
 A arquitetura de microsserviços organiza uma aplicação como um conjunto de serviços 
 pequenos e independentes, cada um responsável por uma capacidade específica do negócio. 
 Esses serviços possuem seu próprio processo de execução e podem ser desenvolvidos, testados, 
@@ -90,7 +87,7 @@ de uma única unidade de implantação, os microsserviços estabelecem limites c
 entre as partes do sistema. Essa separação permite que alterações realizadas em um 
 serviço específico tenham menor impacto sobre os demais serviços da aplicação [@newman2015building].
 
-Organização por capacidades de negócio
+###Organização por capacidades de negócio
 
 Um princípio fundamental dos microsserviços é que os serviços devem ser organizados em 
 torno de capacidades de negócio, e não separados apenas por características técnicas da aplicação.
@@ -111,7 +108,8 @@ microsserviços são construídos em torno de funcionalidades de negócio e pode
 gerenciados por equipes diferentes [@fowler2014microservices].
 
 
-Autonomia dos serviços
+###Autonomia dos serviços
+
 A autonomia é uma característica central dos microsserviços. Cada serviço deve possuir 
 controle sobre seu próprio ciclo de desenvolvimento e implantação, permitindo que equipes 
 diferentes trabalhem e entreguem mudanças sem depender de uma coordenação constante com 
@@ -122,22 +120,20 @@ Essa autonomia envolve:
 - implantação independente;
 - evolução independente;
 - responsabilidade clara sobre uma capacidade do sistema.
+
 Entretanto, Richardson destaca que essa autonomia traz desafios, pois a aplicação deixa de 
 ser um único processo e passa a ser um sistema distribuído, exigindo mecanismos para lidar 
 com comunicação, falhas e consistência dos dados [@richardson2018microservices].
 
-Comunicação entre serviços
-Em uma arquitetura de microsserviços, os serviços precisam colaborar para executar 
-funcionalidades completas da aplicação. Essa comunicação ocorre por meio de mecanismos 
-leves, geralmente utilizando APIs ou sistemas de mensagens.
+### Comunicação entre serviços
 
-Segundo Fowler e Lewis, os serviços comunicam-se utilizando mecanismos simples, 
-frequentemente utilizando recursos HTTP, mantendo baixo acoplamento entre os componentes [@fowler2014microservices].
+Os microsserviços precisam colaborar para executar funcionalidades completas
+da aplicação. Essa comunicação pode ocorrer por APIs ou mecanismos de
+mensageria, introduzindo desafios relacionados à latência, disponibilidade
+e falhas distribuídas [@fowler2014microservices]..
 
-Essa comunicação permite que cada serviço permaneça independente, mas introduz novos 
-desafios relacionados à latência, disponibilidade e tratamento de falhas.
+###Independência de implantação
 
-Independência de implantação
 Uma das principais características dos microsserviços é a capacidade de realizar 
 implantação independente. Em uma aplicação monolítica, uma alteração normalmente exige a 
 construção e implantação de todo o sistema. Já em microsserviços, uma alteração em 
@@ -149,28 +145,6 @@ Essa característica favorece:
 - redução do impacto de mudanças;
 - equipes trabalhando em diferentes partes do sistema.
 
-Banco de dados por serviço
-Um conceito frequentemente associado aos microsserviços é que cada serviço deve ser 
-responsável pelos seus próprios dados. Essa abordagem evita que 
-diferentes serviços dependam diretamente do mesmo 
-banco de dados, reduzindo o acoplamento entre componentes.
-Richardson apresenta o padrão Database per Service, no qual cada serviço possui 
-controle sobre sua própria persistência, permitindo maior autonomia tecnológica e evolução 
-independente [@richardson2018microservices].
-
-Usuário Service
-       |
- Banco Usuários
-
-
-Pedido Service
-       |
- Banco Pedidos
-
-
-Pagamento Service
-       |
- Banco Pagamentos
 
 ## Arquitetura monolítica versus microsserviços
 
@@ -216,7 +190,7 @@ em sistemas grandes e em constante evolução [@newman2015building].
 
 A comparação entre os dois estilos pode ser observada na tabela abaixo:
 
-| Característica | Monolito | Microsserviços |
+| Característica | Monólito | Microsserviços |
 |---|---|---|
 | Estrutura | Uma única aplicação contendo todas as funcionalidades | Conjunto de serviços independentes organizados por capacidades de negócio |
 | Implantação | Toda alteração exige a publicação da aplicação completa | Serviços podem ser implantados individualmente |
@@ -237,19 +211,6 @@ os requisitos de evolução e os atributos de qualidade desejados. Microsserviç
 representam uma alternativa arquitetural para determinados contextos, mas não uma
 solução universal para todos os tipos de aplicações.
 
-::: {.callout-tip}
-## Sobre as citações
-Cite com `[@chave2023]`, que o Quarto converte em `[1]`, `[2]` automaticamente e
-usa para montar a lista de referências no fim da página. Nunca escreva `[1]` na
-mão: a numeração muda quando você insere uma citação nova, e o vínculo com a
-bibliografia se perde.
-
-Para citar uma seção específica de um livro longo, use
-`[@bass2021software, cap. 13]` — isso é obrigatório em livros de referência.
-:::
-
-> Microsserviços organizam uma aplicação como uma suíte de serviços pequenos, executados em processos próprios e comunicados por mecanismos leves. O objetivo é autonomia de evolução e operação, não simplesmente aumentar o número de APIs.
-
 ## Estrutura e componentes
 
 Uma arquitetura de microsserviços divide uma aplicação em um conjunto de serviços
@@ -261,11 +222,6 @@ Essa organização permite implantação independente, escalabilidade seletiva e
 maior flexibilidade tecnológica. Entretanto, também introduz desafios relacionados
 à comunicação distribuída, observabilidade, consistência de dados e gerenciamento
 de falhas.
-
-Diagramas podem ser feitos em Mermaid direto no texto, o que tem a vantagem de
-ficarem versionados como código:
-
-### Componentes
 
 | Componente | Papel | Decisões importantes |
 |---|---|---|
@@ -281,6 +237,18 @@ O princípio “banco por serviço” não exige um produto de banco diferente p
 Exige que outros serviços não leiam ou escrevam diretamente no modelo interno daquele serviço. 
 A integração ocorre por API ou evento.
 
+###Banco de dados por serviço
+
+Um conceito frequentemente associado aos microsserviços é que cada serviço deve ser 
+responsável pelos seus próprios dados. Essa abordagem evita que 
+diferentes serviços dependam diretamente do mesmo 
+banco de dados, reduzindo o acoplamento entre componentes.
+Richardson apresenta o padrão Database per Service, no qual cada serviço possui 
+controle sobre sua própria persistência, permitindo maior autonomia tecnológica e evolução 
+independente [@richardson2018microservices].
+
+![Banco por serviço na arquitetura de microsserviços.](assets/imagens/diagrama.png)
+
 ## Como decompor o sistema
 
 Comece pelo domínio, não pela infraestrutura:
@@ -295,19 +263,8 @@ Um serviço não precisa ser minúsculo: precisa ser coeso, autônomo e operáve
 Uma decomposição que exige chamadas síncronas em cadeia para qualquer operação 
 provavelmente criou fronteiras artificiais.
 
-Comece pelo domínio, não pela infraestrutura:
 
-1. liste capacidades e fluxos de negócio;
-2. agrupe regras que mudam juntas;
-3. defina o que cada serviço possui e o que ele não conhece;
-4. publique contratos pequenos e orientados a casos de uso;
-5. valide fronteiras com cenários de mudança e falha.
-
-Um serviço não precisa ser minúsculo: precisa ser coeso, autônomo e operável. 
-Uma decomposição que exige chamadas síncronas em cadeia para qualquer operação 
-provavelmente criou fronteiras artificiais.
-
-## Comunicação entre serviços
+### Comunicação entre serviços
 
 Há dois eixos úteis: **síncrono ou assíncrono** (o consumidor espera ou processa depois) e 
 **um receptor ou vários** (destinatário único ou assinantes). Em sistemas reais, os estilos 
@@ -319,7 +276,7 @@ em microsserviços descreve HTTP/HTTPS, REST e mensageria como
 combinações comuns [@microsoft-communication].
 
 
-## APIs REST
+### APIs REST
 
 REST sobre HTTP é apropriado para consultas e comandos que precisam de resposta rápida:
 
@@ -338,7 +295,7 @@ toda chamada remota; retry sem limite pode transformar uma falha local em uma te
 Se uma etapa puder acontecer depois, publique `PedidoCriado` e responda com um estado explícito, 
 como `PROCESSANDO`.
 
-## Mensageria e eventos
+### Mensageria e eventos
 
 Mensageria permite trocar mensagens por filas ou tópicos sem manter os serviços conectados 
 durante todo o processamento. Um produtor publica um evento; consumidores independentes reagem 
@@ -351,7 +308,9 @@ absorção de picos e propagação de mudanças. Inclua identificador de correla
 do evento, chave de ordenação quando necessária, consumidor idempotente, retry e fila de 
 mensagens não processáveis.
 
-## API Gateway
+![Comparação entre chamada síncrona com discovery e evento assíncrono.](assets/imagens/comunicacao-e-discovery.svg){#fig-comunicacao fig-align="center"}
+
+### API Gateway
 
 O API Gateway é uma entrada controlada entre clientes e serviços. 
 Pode terminar TLS, autenticar, aplicar limites, rotear versões, agregar respostas e 
@@ -362,7 +321,7 @@ regras de negócio. Monitore sua latência, disponibilidade e comportamento sob 
 A referência da Azure sobre API gateways detalha autenticação, SSL, mTLS, rate limiting e 
 roteamento [@azure-gateway].
 
-## Service Discovery
+### Service Discovery
 
 Em ambientes com containers, réplicas podem surgir, desaparecer e mudar de endereço. 
 Service Discovery resolve um nome lógico — por exemplo, `pedidos` — para instâncias 
@@ -376,72 +335,146 @@ com um gateway [@microservices-discovery].
 Discovery não substitui resiliência: chamadas ainda precisam de timeout, 
 retry limitado, circuit breaker e fallback quando fizer sentido.
 
-## Critérios de decisão
-
-| Pergunta | Preferência inicial |
-|---|---|
-| O consumidor precisa do resultado nesta interação? | HTTP/REST síncrono |
-| O trabalho é demorado ou pode terminar depois? | fila ou evento assíncrono |
-| Existem vários interessados em uma mudança? | publish/subscribe |
-| Há vários tipos de cliente? | gateway ou BFF por experiência |
-| As instâncias mudam dinamicamente? | registry + health checks |
-| A chamada pode falhar ou atrasar? | timeout, retry limitado, circuit breaker e trace |
-
-
-```{mermaid}
-%%| label: fig-estrutura
-%%| fig-cap: "Componentes do estilo e a direção das dependências permitidas."
-flowchart TD
-    A[Componente de interface] --> B[Componente de aplicação]
-    B --> C[Componente de domínio]
-    C --> D[(Armazenamento)]
-```
-
-Ao descrever a estrutura, seja explícito sobre **o que é proibido**, não apenas
-sobre o que é permitido. Um estilo arquitetural se define tanto pelas conexões que
-autoriza quanto pelas que veda — e é a violação dessas restrições que degrada a
-arquitetura ao longo do tempo [@bass2021software, cap. 1].
 
 ## Exemplo aplicado
 
-Traga um caso concreto e conecte-o ao notebook. O texto explica o raciocínio; o
-notebook mostra o código rodando. Os dois precisam falar do mesmo exemplo — se o
-texto discute um sistema de pedidos e o notebook implementa uma calculadora, a
-contribuição volta na revisão.
+Para demonstrar a aplicação da arquitetura de microsserviços, considere uma
+plataforma de comércio eletrônico responsável por gerenciar clientes, pedidos,
+pagamentos e estoque.
 
-Um bom exemplo aplicado mostra três coisas:
+Em uma aplicação monolítica, essas funcionalidades poderiam estar reunidas em
+uma única aplicação. Nesse cenário, uma alteração no módulo de pagamentos, por
+exemplo, poderia exigir a construção, teste e implantação de todo o sistema.
 
-1. **A implementação correta** — o conceito funcionando
-2. **A violação** — o que acontece quando a restrição do estilo é quebrada
-3. **A consequência mensurável** — o custo dessa violação, em acoplamento,
-   tempo de build, dificuldade de teste ou desempenho
+Na abordagem de microsserviços, o sistema pode ser dividido em serviços
+organizados de acordo com as principais capacidades do negócio:
 
-::: {.callout-note}
-## Exemplo executável
-O notebook deste tópico está em
-[`notebook.ipynb`](notebook.ipynb) e pode ser aberto direto no
-[Google Colab](https://colab.research.google.com/).
+- **Usuário Service**: responsável pelo cadastro e gerenciamento dos clientes;
+- **Pedido Service**: responsável pela criação e acompanhamento dos pedidos;
+- **Pagamento Service**: responsável pelo processamento dos pagamentos;
+- **Estoque Service**: responsável pelo controle da disponibilidade dos produtos.
 
-O notebook precisa rodar de ponta a ponta em ambiente limpo. Teste no Colab antes
-de abrir o PR — funcionar na sua máquina não é suficiente.
+Cada serviço possui uma responsabilidade específica e pode evoluir de forma
+independente dos demais.
+
+### Estrutura do sistema
+
+A estrutura simplificada pode ser representada da seguinte forma:
+
+```text
+                         Cliente
+                            |
+                            v
+                      API Gateway
+                            |
+              +-------------+-------------+
+              |             |             |
+              v             v             v
+       Usuário Service  Pedido Service  Pagamento Service
+              |             |             |
+              v             v             v
+       Banco Usuários  Banco Pedidos  Banco Pagamentos
+                            |
+                            v
+                      Estoque Service
+                            |
+                            v
+                      Banco Estoque
+
 :::
 
 ## Trade-offs
 
-Esta é a seção que separa um texto útil de um resumo de Wikipédia. Nenhum estilo
-arquitetural é melhor que outro em abstrato: cada um favorece certos atributos de
-qualidade ao custo de outros [@richards2020fundamentals].
+A arquitetura de microsserviços não deve ser entendida como uma solução que
+simplesmente reduz a complexidade de uma aplicação. Sua adoção modifica a forma
+como essa complexidade é distribuída pelo sistema. Benefícios como fronteiras
+modulares mais fortes, implantação independente e autonomia tecnológica são
+acompanhados por custos relacionados à comunicação distribuída, consistência de
+dados e operação de múltiplos serviços [@newman2015building;
+@richardson2018microservices].
 
-Seja específico quanto à dimensão. "É mais escalável" não diz nada — escalável em
-quê? Número de requisições simultâneas? Número de desenvolvedores trabalhando em
-paralelo? Volume de dados?
+### Benefícios
 
-| Atributo | Efeito | Por quê |
+Um dos principais benefícios está nas **fronteiras modulares**. Ao separar a
+aplicação em serviços, cada unidade passa a possuir uma responsabilidade mais
+delimitada, dificultando que outros componentes acessem diretamente sua
+implementação interna. Essa separação pode facilitar a manutenção e permitir
+que diferentes equipes trabalhem em partes distintas do sistema [@fowler2014microservices].
+
+Outro benefício é a **implantação independente**. Como os serviços são unidades
+separadas, uma alteração pode ser publicada sem necessariamente reconstruir e
+implantar toda a aplicação. Para que isso funcione, os contratos entre os
+serviços precisam ser mantidos de forma compatível [@newman2015building].
+
+Os microsserviços também permitem **diversidade tecnológica**. Serviços
+diferentes podem utilizar linguagens, frameworks ou tecnologias de
+armazenamento distintas quando houver uma justificativa para essa escolha
+[@fowler2014microservices].
+
+A arquitetura também possibilita **escalabilidade seletiva**. Em vez de
+aumentar os recursos de toda a aplicação, serviços que apresentam maior demanda
+podem receber mais instâncias ou recursos. Essa possibilidade, entretanto, não
+significa que a escalabilidade seletiva será sempre mais eficiente que escalar
+uma aplicação monolítica; o benefício depende das características do sistema
+[@fowler2014microservices].
+
+### Custos e desafios
+
+O principal custo introduzido pelos microsserviços está relacionado à
+**distribuição**. Em uma aplicação executada em um único processo, uma chamada
+entre componentes ocorre localmente. Em uma arquitetura distribuída, a
+comunicação entre serviços ocorre pela rede e pode sofrer com latência,
+indisponibilidade ou falhas de comunicação [@richardson2018microservices].
+
+A **consistência dos dados** também se torna mais complexa. Como os dados podem
+estar distribuídos entre diferentes serviços, uma operação de negócio pode
+envolver múltiplos modelos de dados. Nesse cenário, manter uma única transação
+abrangendo todos os serviços pode ser mais difícil, exigindo mecanismos
+específicos para coordenar operações distribuídas [@richardson2018microservices].
+
+Outro custo é a **complexidade operacional**. Uma aplicação monolítica pode
+envolver um número relativamente pequeno de processos, enquanto uma arquitetura
+de microsserviços pode possuir dezenas ou centenas de serviços. Isso aumenta a
+necessidade de automação, monitoramento, logs, métricas, rastreamento distribuído
+e processos confiáveis de implantação [@newman2015building].
+
+A **testabilidade** também apresenta novos desafios. Testar cada serviço
+isoladamente pode ser relativamente simples, mas testar comportamentos que
+atravessam vários serviços exige verificar contratos e interações entre
+componentes. Newman destaca que testes de sistemas distribuídos exigem
+estratégias diferentes das utilizadas em aplicações monolíticas
+[@newman2015building].
+
+Além disso, a decomposição pode criar problemas quando as fronteiras dos
+serviços são mal definidas. Serviços excessivamente dependentes podem formar
+cadeias de chamadas ou exigir alterações coordenadas, reduzindo justamente a
+autonomia que a arquitetura procura proporcionar [@fowler2014microservices].
+
+### Comparação dos principais trade-offs
+
+| Aspecto | Possível benefício | Custo ou desafio |
 |---|---|---|
-| Modificabilidade | Favorecida | Mudança em uma camada não propaga, desde que a interface se mantenha |
-| Desempenho | Comprometido | Cada requisição atravessa todas as camadas, somando latência |
-| Testabilidade | Favorecida | Camadas podem ser substituídas por dublês em teste |
-| Simplicidade operacional | Comprometida | Mais partes para implantar e monitorar |
+| Modularidade | Fronteiras mais claras entre responsabilidades | Fronteiras mal definidas podem aumentar o acoplamento |
+| Implantação | Serviços podem ser implantados independentemente | Exige automação e contratos compatíveis |
+| Escalabilidade | Possibilidade de escalar serviços individualmente | A infraestrutura necessária aumenta |
+| Tecnologia | Diferentes tecnologias podem ser utilizadas | Diversidade excessiva aumenta a complexidade operacional |
+| Comunicação | Serviços podem evoluir de forma independente | Comunicação pela rede adiciona latência e pontos de falha |
+| Dados | Cada serviço pode controlar seus próprios dados | Consistência entre serviços torna-se mais complexa |
+| Testes | Serviços podem ser testados isoladamente | Testes de integração e ponta a ponta tornam-se mais complexos |
+| Operação | Serviços menores podem ser gerenciados separadamente | Monitoramento, logs e deploys tornam-se mais numerosos |
+
+Portanto, o principal trade-off dos microsserviços está entre **autonomia e
+complexidade distribuída**. A arquitetura pode favorecer sistemas que precisam
+de evolução independente, diferentes equipes ou escalabilidade específica por
+capacidade, mas exige maior maturidade para lidar com comunicação, dados,
+testes e operação distribuída [@newman2015building; @richardson2018microservices].
+
+A escolha da arquitetura deve, portanto, considerar o contexto do sistema. A
+adoção de microsserviços para uma aplicação pequena ou com poucas necessidades
+de evolução independente pode introduzir custos que não seriam necessários em
+uma arquitetura monolítica. Fowler destaca que os benefícios e custos devem ser
+avaliados de acordo com as características específicas de cada sistema
+[@fowler2014microservices].
 
 ## Quando usar e quando não usar
 
@@ -464,33 +497,20 @@ de recomendações vagas.
 - Requisitos fortes de consistência imediata entre módulos.
 - Adoção por moda, sem dor real de negócio.
 
-- A condição em que o custo supera o benefício
-- Outra condição
+### Critérios de decisão
 
-**Sinais de que a escolha foi errada:**
+| Pergunta | Preferência inicial |
+|---|---|
+| O consumidor precisa do resultado nesta interação? | HTTP/REST síncrono |
+| O trabalho é demorado ou pode terminar depois? | fila ou evento assíncrono |
+| Existem vários interessados em uma mudança? | publish/subscribe |
+| Há vários tipos de cliente? | gateway ou BFF por experiência |
+| As instâncias mudam dinamicamente? | registry + health checks |
+| A chamada pode falhar ou atrasar? | timeout, retry limitado, circuit breaker e trace |
 
-- Sintoma observável que indica desalinhamento entre estilo e problema
-
-::: {.callout-note}
-## Slides deste tópico
-A apresentação está em [`slides.qmd`](slides.qmd) — 16 slides para uma fala de
-20 minutos, com os mesmos exemplos e trade-offs deste texto.
-:::
 
 ## Referências
-
-As referências abaixo são geradas automaticamente a partir de `referencias.bib`.
-Não escreva esta lista à mão.
 
 ::: {#refs}
 :::
 
-::: {.como-citar}
-**Como citar este tópico**
-
-Nome Completo do Autor; Nome Completo da Segunda Autora. "Tópico modelo".
-*Guia Aberto de Arquitetura de Software*, 2026. Disponível em:
-<https://ifpe-belojardim-es.github.io/guia-arquitetura-de-software/content/00-modelo/>. Licenciado sob CC BY-NC 4.0.
-
-Vários autores: separe por ponto e vírgula, na mesma ordem do `metadata.yaml`.
-:::

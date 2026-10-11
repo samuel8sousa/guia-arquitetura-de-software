@@ -37,10 +37,10 @@ A arquitetura de microsserviços é um estilo arquitetural baseado na construç�
 como um conjunto de pequenos serviços independentes, cada um responsável por uma capacidade
 específica do negócio e executado de forma autônoma. Esses serviços colaboram entre si por
 meio de interfaces bem definidas, permitindo que sejam desenvolvidos, implantados e 
-evoluídos de maneira independente [@newman2015building]. Newman define microsserviços como 
+evoluídos de maneira independente [@newman2015building, cap. 1]. Newman define microsserviços como 
 serviços pequenos e autônomos que trabalham em conjunto, enfatizando a existência 
 de ciclos de vida próprios para cada serviço e a organização desses componentes em torno 
-de domínios de negócio.
+de domínios de negócio [@newman2015building, cap. 1].
 
 O surgimento dessa abordagem está relacionado aos desafios encontrados no desenvolvimento e manutenção
 de sistemas monolíticos de grande escala. À medida que aplicações crescem, torna-se
@@ -48,16 +48,16 @@ comum o aumento do acoplamento entre componentes, dificultando alterações isol
 evolução independente de funcionalidades e a atuação de equipes diferentes sobre o mesmo 
 código. Newman destaca que sistemas monolíticos extensos podem tornar difícil identificar onde uma 
 mudança deve ser realizada, pois funcionalidades relacionadas acabam espalhadas pelo código, 
-aumentando a dificuldade de manutenção e evolução [@newman2015building].
+aumentando a dificuldade de manutenção e evolução [@newman2015building, cap. 1].
 
 Esse problema pode ser compreendido como uma dificuldade de decomposição adequada do 
 sistema. Quando os módulos são organizados de forma inadequada, mudanças em uma parte da 
 aplicação podem gerar impactos inesperados em outras partes, aumentando a dependência 
 entre componentes. Nesse contexto, a arquitetura de microsserviços busca criar fronteiras 
 mais claras entre responsabilidades, permitindo que cada serviço possua um limite bem 
-definido e possa evoluir sem depender diretamente dos demais[@newman2015building]. Newman destaca que os limites 
+definido e possa evoluir sem depender diretamente dos demais[@newman2015building, cap. 3]. Newman destaca que os limites 
 dos microsserviços devem ser orientados por fronteiras de negócio, evitando que um serviço 
-cresça excessivamente e volte a concentrar responsabilidades[@newman2015building].
+cresça excessivamente e volte a concentrar responsabilidades[@newman2015building, cap. 3].
 
 Essa preocupação com a forma de dividir sistemas já era discutida por Parnas [@parnas1972modularization], ao 
 propor critérios para decomposição modular. O autor argumenta que uma boa divisão de 
@@ -74,33 +74,33 @@ maior autonomia de desenvolvimento, implantação e evolução do sistema.
 
 ## Conceitos fundamentais de microsserviços
 
-###Serviços pequenos e autônomos
+### Serviços pequenos e autônomos
 
 A arquitetura de microsserviços organiza uma aplicação como um conjunto de serviços 
 pequenos e independentes, cada um responsável por uma capacidade específica do negócio. 
 Esses serviços possuem seu próprio processo de execução e podem ser desenvolvidos, testados, 
-implantados e evoluídos de forma independente dos demais componentes do sistema [@newman2015building].
+implantados e evoluídos de forma independente dos demais componentes do sistema [@newman2015building, cap. 1].
 
 
 Diferentemente de uma aplicação monolítica, onde todas as funcionalidades fazem parte 
 de uma única unidade de implantação, os microsserviços estabelecem limites claros 
 entre as partes do sistema. Essa separação permite que alterações realizadas em um 
-serviço específico tenham menor impacto sobre os demais serviços da aplicação [@newman2015building].
+serviço específico tenham menor impacto sobre os demais serviços da aplicação [@newman2015building, cap. 1].
 
-###Organização por capacidades de negócio
+### Organização por capacidades de negócio
 
 Um princípio fundamental dos microsserviços é que os serviços devem ser organizados em 
 torno de capacidades de negócio, e não separados apenas por características técnicas da aplicação.
 Por exemplo, em vez de dividir uma aplicação em equipes ou componentes como "interface", "banco de dados" e "lógica de aplicação", 
 a arquitetura busca criar serviços relacionados ao domínio do problema:
 
-Cliente Service
+- Cliente Service
 
-Pedido Service
+- Pedido Service
 
-Pagamento Service
+- Pagamento Service
 
-Estoque Service
+- Estoque Service
 
 Essa abordagem reduz dependências entre equipes e permite que cada serviço tenha 
 responsabilidade sobre uma parte específica do negócio. Fowler e Lewis destacam que os 
@@ -108,12 +108,12 @@ microsserviços são construídos em torno de funcionalidades de negócio e pode
 gerenciados por equipes diferentes [@fowler2014microservices].
 
 
-###Autonomia dos serviços
+### Autonomia dos serviços
 
 A autonomia é uma característica central dos microsserviços. Cada serviço deve possuir 
 controle sobre seu próprio ciclo de desenvolvimento e implantação, permitindo que equipes 
 diferentes trabalhem e entreguem mudanças sem depender de uma coordenação constante com 
-outras partes do sistema [@newman2015building].
+outras partes do sistema [@newman2015building, cap. 1].
 
 Essa autonomia envolve:
 - código independente;
@@ -130,9 +130,9 @@ com comunicação, falhas e consistência dos dados [@richardson2018microservice
 Os microsserviços precisam colaborar para executar funcionalidades completas
 da aplicação. Essa comunicação pode ocorrer por APIs ou mecanismos de
 mensageria, introduzindo desafios relacionados à latência, disponibilidade
-e falhas distribuídas [@fowler2014microservices]..
+e falhas distribuídas [@fowler2014microservices].
 
-###Independência de implantação
+### Independência de implantação
 
 Uma das principais características dos microsserviços é a capacidade de realizar 
 implantação independente. Em uma aplicação monolítica, uma alteração normalmente exige a 
@@ -141,6 +141,7 @@ determinado serviço pode ser publicada sem necessariamente modificar ou implant
 componentes [@fowler2014microservices].
 
 Essa característica favorece:
+
 - entregas menores e frequentes;
 - redução do impacto de mudanças;
 - equipes trabalhando em diferentes partes do sistema.
@@ -159,14 +160,14 @@ operacional. Como toda a aplicação está concentrada em um único projeto, o
 desenvolvimento, os testes e a implantação possuem menor complexidade, permitindo
 que equipes pequenas construam sistemas de forma mais direta. Além disso, a
 comunicação entre os componentes ocorre dentro do mesmo processo, evitando custos
-relacionados à comunicação distribuída [@newman2015building].
+relacionados à comunicação distribuída [@newman2015building, cap. 1].
 
 Entretanto, conforme uma aplicação monolítica cresce, surgem dificuldades
 relacionadas à manutenção e evolução do sistema. O aumento do tamanho do código
 pode tornar os limites entre funcionalidades menos claros, fazendo com que mudanças
 em uma determinada parte da aplicação tenham impacto em outros componentes. Dessa
 forma, uma alteração aparentemente localizada pode exigir a reconstrução, teste e
-implantação de toda a aplicação [@newman2015building].
+implantação de toda a aplicação [@newman2015building, cap. 1].
 
 Outro desafio está relacionado à escalabilidade e à organização das equipes. Em uma
 aplicação monolítica, a escalabilidade normalmente ocorre considerando o sistema
@@ -223,6 +224,20 @@ maior flexibilidade tecnológica. Entretanto, também introduz desafios relacion
 à comunicação distribuída, observabilidade, consistência de dados e gerenciamento
 de falhas.
 
+- **BFF (Backend for Frontend):** uma camada de backend adaptada às necessidades
+  de um tipo específico de cliente, como aplicações web ou mobile.
+- **Health check:** mecanismo utilizado para verificar se uma instância de serviço
+  está disponível e apta a receber requisições.
+- **Schema:** estrutura que define como os dados são organizados e armazenados
+  em um banco de dados.
+- **Retry:** tentativa de realizar novamente uma operação que falhou.
+- **Trace:** registro do caminho percorrido por uma requisição através dos
+  diferentes componentes de um sistema distribuído.
+
+Com esses conceitos em mente, os principais componentes podem ser organizados da
+seguinte forma:
+
+
 | Componente | Papel | Decisões importantes |
 |---|---|---|
 | Clientes | Web, mobile ou sistemas externos | contrato público e autenticação |
@@ -233,11 +248,13 @@ de falhas.
 | Service Discovery | resolução de nomes para instâncias | registro, health checks e balanceamento |
 | Observabilidade | visão do comportamento distribuído | logs, métricas e traces |
 
-O princípio “banco por serviço” não exige um produto de banco diferente para cada serviço. 
-Exige que outros serviços não leiam ou escrevam diretamente no modelo interno daquele serviço. 
-A integração ocorre por API ou evento.
+O princípio de **banco por serviço** estabelece que cada serviço deve manter
+responsabilidade sobre seus próprios dados, evitando que outros serviços
+acessem diretamente seu modelo interno. A comunicação entre os serviços
+deve ocorrer por meio de APIs ou mecanismos de mensageria
+[@richardson2018microservices, cap. 1; @richardson2018microservices, cap. 3].
 
-###Banco de dados por serviço
+### Banco de dados por serviço
 
 Um conceito frequentemente associado aos microsserviços é que cada serviço deve ser 
 responsável pelos seus próprios dados. Essa abordagem evita que 
@@ -266,9 +283,11 @@ provavelmente criou fronteiras artificiais.
 
 ### Comunicação entre serviços
 
-Há dois eixos úteis: **síncrono ou assíncrono** (o consumidor espera ou processa depois) e 
-**um receptor ou vários** (destinatário único ou assinantes). Em sistemas reais, os estilos 
-convivem.
+Há dois eixos úteis para classificar a comunicação entre serviços:
+**síncrona ou assíncrona** (o consumidor espera a resposta ou o processamento
+ocorre posteriormente) e **um receptor ou vários** (destinatário único ou
+múltiplos assinantes). Em sistemas reais, esses estilos podem coexistir
+[@microsoft-communication].
 
 A recomendação é manter o caminho síncrono curto e usar eventos para propagar fatos que 
 não precisam bloquear a resposta original. A documentação da Microsoft sobre comunicação 
@@ -278,16 +297,26 @@ combinações comuns [@microsoft-communication].
 
 ### APIs REST
 
-REST sobre HTTP é apropriado para consultas e comandos que precisam de resposta rápida:
+REST sobre HTTP é uma opção adequada para operações síncronas nas quais
+o consumidor precisa receber uma resposta durante a própria interação.
+Em uma arquitetura de microsserviços, APIs definem as operações disponíveis
+e estabelecem o contrato utilizado pelos serviços para colaborar
+[@richardson2018microservices, cap. 3; @microsoft-communication].
 
 - `GET /produtos/{id}` consulta um recurso;
 - `POST /pedidos` cria uma intenção de pedido;
 - códigos HTTP, payloads e erros formam parte do contrato;
 - OpenAPI documenta, valida e ajuda a gerar clientes.
 
-Para reduzir acoplamento, prefira contratos orientados a recursos, 
-versionamento compatível e idempotência onde houver retry. Defina timeout em 
-toda chamada remota; retry sem limite pode transformar uma falha local em uma tempestade.
+**OpenAPI** é uma especificação utilizada para descrever contratos de APIs
+HTTP de forma estruturada, permitindo documentar as operações, parâmetros,
+respostas e formatos utilizados pelos serviços.
+
+
+Para reduzir o acoplamento, os contratos devem ser definidos e evoluídos
+de forma compatível. Chamadas remotas também devem considerar mecanismos
+de tolerância a falhas, como timeouts e retries controlados
+[@richardson2018microservices, cap. 3].
 
 ### O risco da cadeia síncrona
 
@@ -305,10 +334,9 @@ a ele.
 
 Use mensageria para processamento demorado, integração com múltiplos consumidores, 
 absorção de picos e propagação de mudanças. Inclua identificador de correlação, versão 
-do evento, chave de ordenação quando necessária, consumidor idempotente, retry e fila de 
+do evento, chave de ordenação quando necessária, consumidor independentes, retry e fila de 
 mensagens não processáveis.
 
-![Comparação entre chamada síncrona com discovery e evento assíncrono.](assets/imagens/comunicacao-e-discovery.svg){#fig-comunicacao fig-align="center"}
 
 ### API Gateway
 
@@ -318,7 +346,7 @@ adaptar o contrato para um cliente — o padrão **Backend for Frontend (BFF)**.
 
 Ele reduz o acoplamento do cliente à topologia interna, mas não deve concentrar 
 regras de negócio. Monitore sua latência, disponibilidade e comportamento sob falha. 
-A referência da Azure sobre API gateways detalha autenticação, SSL, mTLS, rate limiting e 
+A referência da Azure sobre API gateways detalha autenticação, SSL,**mTLS (Mutual TLS)**, rate limiting e 
 roteamento [@azure-gateway].
 
 ### Service Discovery
@@ -335,12 +363,18 @@ com um gateway [@microservices-discovery].
 Discovery não substitui resiliência: chamadas ainda precisam de timeout, 
 retry limitado, circuit breaker e fallback quando fizer sentido.
 
+O **circuit breaker** é um mecanismo de resiliência que interrompe
+temporariamente novas chamadas para um serviço que apresenta falhas
+repetidas. Após um período, novas tentativas podem ser realizadas para
+verificar se o serviço voltou a funcionar. Dessa forma, evita-se que um
+serviço com problemas receba continuamente novas requisições e que a falha
+se propague para outros componentes [@richardson2018microservices, cap. 3].
 
 ## Exemplo aplicado
 
 Para demonstrar a aplicação da arquitetura de microsserviços, considere uma
-plataforma de comércio eletrônico responsável por gerenciar clientes, pedidos,
-pagamentos e estoque.
+plataforma de comércio eletrônico responsável por gerenciar produtos, pedidos
+e pagamentos.
 
 Em uma aplicação monolítica, essas funcionalidades poderiam estar reunidas em
 uma única aplicação. Nesse cenário, uma alteração no módulo de pagamentos, por
@@ -349,39 +383,156 @@ exemplo, poderia exigir a construção, teste e implantação de todo o sistema.
 Na abordagem de microsserviços, o sistema pode ser dividido em serviços
 organizados de acordo com as principais capacidades do negócio:
 
-- **Usuário Service**: responsável pelo cadastro e gerenciamento dos clientes;
-- **Pedido Service**: responsável pela criação e acompanhamento dos pedidos;
-- **Pagamento Service**: responsável pelo processamento dos pagamentos;
-- **Estoque Service**: responsável pelo controle da disponibilidade dos produtos.
+- **Serviço de Produtos**: responsável pelo catálogo e controle de estoque;
+- **Serviço de Pedidos**: responsável pela criação e acompanhamento dos pedidos;
+- **Serviço de Pagamentos**: responsável pelo processamento dos pagamentos.
 
 Cada serviço possui uma responsabilidade específica e pode evoluir de forma
 independente dos demais.
 
 ### Estrutura do sistema
 
-A estrutura simplificada pode ser representada da seguinte forma:
+A comunicação entre os serviços ocorre por meio de requisições HTTP. O
+**Serviço de Pedidos** coordena a criação do pedido, consultando o
+**Serviço de Produtos** para verificar a disponibilidade e o
+**Serviço de Pagamentos** para realizar o processamento do pagamento.
 
 ```text
                          Cliente
                             |
                             v
-                      API Gateway
-                            |
-              +-------------+-------------+
-              |             |             |
-              v             v             v
-       Usuário Service  Pedido Service  Pagamento Service
-              |             |             |
-              v             v             v
-       Banco Usuários  Banco Pedidos  Banco Pagamentos
-                            |
-                            v
-                      Estoque Service
-                            |
-                            v
-                      Banco Estoque
+                    Serviço de Pedidos
+                       /          \
+                      /            \
+                     v              v
+          Serviço de Produtos   Serviço de Pagamentos
+                  |                    |
+                  v                    v
+            Banco Produtos       Banco Pagamentos
 
-:::
+```
+
+### Fluxo de sucesso
+
+Considere que um cliente deseja realizar uma compra. O fluxo pode ocorrer da
+seguinte forma:
+
+1. O cliente envia uma solicitação para criar um pedido ao **Serviço de Pedidos**.
+2. O **Serviço de Pedidos** consulta o **Serviço de Produtos** para verificar
+   se o produto está disponível.
+3. O **Serviço de Produtos** confirma a disponibilidade do produto.
+4. O **Serviço de Pedidos** envia uma solicitação ao **Serviço de Pagamentos**.
+5. O **Serviço de Pagamentos** processa o pagamento.
+6. O pagamento é confirmado.
+7. O **Serviço de Pedidos** registra o pedido como confirmado e retorna o
+   resultado ao cliente.
+
+O fluxo pode ser representado da seguinte maneira:
+## Exemplo aplicado
+
+Para demonstrar a aplicação da arquitetura de microsserviços, considere uma
+plataforma de comércio eletrônico responsável por gerenciar produtos, pedidos
+e pagamentos.
+
+Em uma aplicação monolítica, essas funcionalidades poderiam estar reunidas em
+uma única aplicação. Nesse cenário, uma alteração no módulo de pagamentos, por
+exemplo, poderia exigir a construção, teste e implantação de todo o sistema.
+
+Na abordagem de microsserviços, o sistema pode ser dividido em serviços
+organizados de acordo com as principais capacidades do negócio:
+
+- **Serviço de Produtos**: responsável pelo catálogo e controle de estoque;
+- **Serviço de Pedidos**: responsável pela criação e acompanhamento dos pedidos;
+- **Serviço de Pagamentos**: responsável pelo processamento dos pagamentos.
+
+Cada serviço possui uma responsabilidade específica e pode evoluir de forma
+independente dos demais.
+
+### Estrutura do sistema
+
+A comunicação entre os serviços ocorre por meio de requisições HTTP. O
+**Serviço de Pedidos** coordena a criação do pedido, consultando o
+**Serviço de Produtos** para verificar a disponibilidade e o
+**Serviço de Pagamentos** para realizar o processamento do pagamento.
+
+### Fluxo de sucesso
+
+Considere que um cliente deseja realizar uma compra. O fluxo pode ocorrer da
+seguinte forma:
+
+1. O cliente envia uma solicitação para criar um pedido ao **Serviço de Pedidos**.
+2. O **Serviço de Pedidos** consulta o **Serviço de Produtos** para verificar
+   se o produto está disponível.
+3. O **Serviço de Produtos** confirma a disponibilidade do produto.
+4. O **Serviço de Pedidos** envia uma solicitação ao **Serviço de Pagamentos**.
+5. O **Serviço de Pagamentos** processa o pagamento.
+6. O pagamento é confirmado.
+7. O **Serviço de Pedidos** registra o pedido como confirmado e retorna o
+   resultado ao cliente.
+
+O fluxo pode ser representado da seguinte maneira:
+
+```text
+
+Cliente
+   |
+   v
+Serviço de Pedidos
+   |
+   | verifica disponibilidade
+   v
+Serviço de Produtos
+   |
+   | produto disponível
+   v
+Serviço de Pedidos
+   |
+   | processa pagamento
+   v
+Serviço de Pagamentos
+   |
+   | pagamento aprovado
+   v
+Serviço de Pedidos
+   |
+   v
+Pedido confirmado
+
+### Fluxo de falha
+
+Agora considere que o pagamento não seja aprovado. O fluxo inicial permanece
+semelhante:
+1. O cliente solicita a criação do pedido.
+2. O Serviço de Pedidos consulta o Serviço de Produtos.
+3. O Serviço de Produtos confirma que o produto está disponível.
+4. O Serviço de Pedidos solicita o processamento do pagamento.
+5. O Serviço de Pagamentos informa que o pagamento foi recusado.
+6. O Serviço de Pedidos não confirma o pedido e retorna ao cliente um estado
+   indicando que a operação não foi concluída.
+
+Cliente
+   |
+   v
+Serviço de Pedidos
+   |
+   v
+Serviço de Produtos
+   |
+   | produto disponível
+   v
+Serviço de Pedidos
+   |
+   v
+Serviço de Pagamentos
+   |
+   | pagamento recusado
+   v
+Serviço de Pedidos
+   |
+   v
+Pedido não confirmado   
+
+
 
 ## Trade-offs
 
@@ -429,8 +580,20 @@ indisponibilidade ou falhas de comunicação [@richardson2018microservices].
 A **consistência dos dados** também se torna mais complexa. Como os dados podem
 estar distribuídos entre diferentes serviços, uma operação de negócio pode
 envolver múltiplos modelos de dados. Nesse cenário, manter uma única transação
-abrangendo todos os serviços pode ser mais difícil, exigindo mecanismos
-específicos para coordenar operações distribuídas [@richardson2018microservices].
+abrangendo todos os serviços pode ser mais difícil [@richardson2018microservices].
+
+Uma abordagem utilizada para coordenar operações que envolvem múltiplos
+serviços é o **Padrão Saga**. Uma Saga divide uma operação de negócio em uma
+sequência de transações locais executadas pelos diferentes serviços. Quando
+uma etapa falha, ações de compensação podem ser executadas para desfazer ou
+compensar os efeitos das etapas anteriores [@richardson2018microservices].
+
+Como cada serviço mantém suas próprias transações locais, o resultado final
+da operação pode não ser atualizado simultaneamente em todos os serviços.
+Esse comportamento é conhecido como **consistência eventual**, em que os
+dados podem apresentar estados temporariamente diferentes, mas tendem a
+convergir para um estado consistente após o processamento das operações
+pendentes [@richardson2018microservices].
 
 Outro custo é a **complexidade operacional**. Uma aplicação monolítica pode
 envolver um número relativamente pequeno de processos, enquanto uma arquitetura
@@ -462,6 +625,24 @@ autonomia que a arquitetura procura proporcionar [@fowler2014microservices].
 | Dados | Cada serviço pode controlar seus próprios dados | Consistência entre serviços torna-se mais complexa |
 | Testes | Serviços podem ser testados isoladamente | Testes de integração e ponta a ponta tornam-se mais complexos |
 | Operação | Serviços menores podem ser gerenciados separadamente | Monitoramento, logs e deploys tornam-se mais numerosos |
+
+Os custos apresentados na tabela tornam-se mais evidentes em cenários que
+envolvem várias chamadas entre serviços. Por exemplo, em uma operação de
+compra, uma requisição pode passar pelo **Serviço de Pedidos**, consultar o
+**Serviço de Produtos** e posteriormente chamar o **Serviço de Pagamentos**.
+Quando essas chamadas são realizadas de forma síncrona, a latência de cada
+etapa pode ser acumulada na resposta final. Além disso, uma falha ou atraso em
+um dos serviços pode afetar o processamento da operação como um todo
+[@richardson2018microservices, cap. 3].
+
+Outro risco ocorre quando os serviços são separados fisicamente, mas continuam
+fortemente dependentes uns dos outros. Nesse cenário, o sistema pode se
+transformar em um **monólito distribuído**: embora existam vários serviços,
+uma alteração ou falha em um deles continua exigindo coordenação ou afetando
+diversos outros componentes. Dessa forma, a simples divisão da aplicação em
+vários serviços não garante autonomia; é necessário estabelecer fronteiras
+adequadas e reduzir dependências entre os componentes
+[@newman2015building, cap. 1; @richardson2018microservices, cap. 2].
 
 Portanto, o principal trade-off dos microsserviços está entre **autonomia e
 complexidade distribuída**. A arquitetura pode favorecer sistemas que precisam
@@ -499,12 +680,18 @@ de recomendações vagas.
 
 ### Critérios de decisão
 
+A escolha do mecanismo de comunicação depende das características da
+interação entre os serviços. Richardson apresenta diferentes estilos de
+comunicação síncrona e assíncrona, enquanto a documentação da Microsoft
+discute o uso de APIs, mensageria e mecanismos de comunicação em arquiteturas
+de microsserviços [@richardson2018microservices, cap. 3; @microsoft-communication].
+
 | Pergunta | Preferência inicial |
 |---|---|
 | O consumidor precisa do resultado nesta interação? | HTTP/REST síncrono |
 | O trabalho é demorado ou pode terminar depois? | fila ou evento assíncrono |
 | Existem vários interessados em uma mudança? | publish/subscribe |
-| Há vários tipos de cliente? | gateway ou BFF por experiência |
+| Há vários tipos de cliente? | gateway ou BFF |
 | As instâncias mudam dinamicamente? | registry + health checks |
 | A chamada pode falhar ou atrasar? | timeout, retry limitado, circuit breaker e trace |
 

@@ -52,7 +52,7 @@ Uma unidade autônoma, organizada em torno de uma **capacidade de negócio**, co
 |                                |
 +--------------------------------+
 
-text´´´
+```
 
 ### Microsserviços
 
@@ -62,7 +62,7 @@ text´´´
 | Usuários |  | Pedidos  |  | Pagamento |
 +----------+  +----------+  +-----------+
 
-text´´´
+```
 
 ## Visão da arquitetura
 

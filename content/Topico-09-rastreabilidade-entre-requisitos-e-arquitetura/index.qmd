@@ -24,9 +24,7 @@ keywords: ["rastreabilidade", "requisitos", "arquitetura de software", "decisõe
 <dt>Pré-requisitos</dt>
 <dd>Engenharia de requisitos e fundamentos de arquitetura de software.</dd>
 <dt>Formatos</dt>
-<dd>
-[texto]{.formato} [notebook](notebook.ipynb){.formato} [áudio](assets/audio/Rastreabilidade_entre_requisitos_e_arquitetura_de_software.m4a){.formato} [gem](GEM_GEMINI.md){.formato} [slides](slides.qmd){.formato}
-</dd>
+<dd>[texto]{.formato} [notebook](notebook.ipynb){.formato} [áudio](assets/audio/Rastreabilidade_entre_requisitos_e_arquitetura_de_software.m4a){.formato} [gem](GEM_GEMINI.md){.formato} [slides](slides.qmd){.formato}</dd>
 </dl>
 :::
 
@@ -149,17 +147,22 @@ Esse processo também exige verificar quais outros requisitos dependem dos mesmo
 Um componente pode atender a diferentes necessidades, de modo que uma alteração aparentemente
 localizada pode afetar outras funcionalidades.
 
-Com a matriz de rastreabilidade registrada (REQ-04 → DA-02, DA-04 → COMP-02, COMP-03, COMP-06 → TST-04), a equipe identifica exatamente quais elementos precisam ser revisados:
+Com a matriz de rastreabilidade registrada (REQ-04 → DA-02, DA-04 → COMP-02, COMP-03, COMP-06 → TST-04), a equipe identifica 
+exatamente quais elementos precisam ser revisados:
 
-- DA-02 (índice do repositório): pode precisar de ajuste no índice por profissional e horário.
-- DA-04 (cache): a política de invalidação pode ser insuficiente para 500 ms.
-- COMP-02 (Serviço de Disponibilidade): a estratégia de leitura precisa ser reavaliada.
-- COMP-03 (Repositório de Consultas): o índice pode não ser suficiente.
-- COMP-06 (Cache): o tempo de resposta do cache entra no orçamento de 500 ms.
-- TST-04: o limiar do teste de desempenho precisa ser atualizado.
+- **DA-02 (índice do repositório):** pode precisar de ajuste no índice por profissional e horário.
+- **DA-04 (cache):** a política de invalidação pode ser insuficiente para 500 ms.
+- **COMP-02 (Serviço de Disponibilidade):** a estratégia de leitura precisa ser reavaliada.
+- **COMP-03 (Repositório de Consultas):** o índice pode não ser suficiente.
+- **COMP-06 (Cache):** o tempo de resposta do cache entra no orçamento de 500 ms.
+- **TST-04:** o limiar do teste de desempenho precisa ser atualizado.
 
-Sem a rastreabilidade, a equipe poderia alterar apenas o componente mais óbvio (COMP-02) e esquecer o cache ou o índice, resultando em um sistema que falha no novo requisito de desempenho. Quando os requisitos mudam, a visibilidade dessas dependências ajuda a orientar a manutenção do sistema [@egyed2015developers]. A rastreabilidade não elimina a mudança, mas torna seu custo visível e gerenciável.
+Sem a rastreabilidade, a equipe poderia alterar apenas o componente mais óbvio (COMP-02) e esquecer o cache ou o índice, 
+resultando em um sistema que falha no novo requisito de desempenho. Quando os requisitos mudam, a visibilidade dessas 
+dependências ajuda a orientar a manutenção do sistema [@egyed2015developers].
 
+Dessa forma, a análise de impacto ajuda a planejar modificações, identificar pontos que precisam de revisão e atualizar 
+os testes relacionados. A rastreabilidade não elimina a mudança, mas torna seu custo visível e gerenciável.
 ## Técnicas para estabelecer e manter a rastreabilidade
 
 As seções anteriores apresentam os conceitos e a importância da rastreabilidade.
@@ -179,10 +182,15 @@ em matriz, as consultas nas duas direções e a atualização dos links ao longo
 
 ### Registro dos vínculos
 
-Um vínculo de rastreabilidade é uma tripla formada por artefato de origem, tipo de vínculo e artefato de destino. O tipo é o que dá significado à relação e impede que a matriz se torne um conjunto de marcas sem semântica [@gotel2012traceability, p. 7]. O conjunto de artefatos e de tipos de vínculo permitidos em um projeto é definido no modelo de informação de rastreabilidade, que deve ser acordado antes do preenchimento da matriz. Esse modelo explicita quais relações a equipe precisa registrar para responder às suas perguntas de cobertura e impacto [@gotel2012traceability].
+Um vínculo de rastreabilidade é uma tripla formada por artefato de origem, tipo de vínculo e artefato de destino. 
+O tipo dá significado à relação e impede que a matriz se torne um conjunto de marcas sem semântica [@gotel2012traceability, p. 7].
+O conjunto de artefatos e de tipos de vínculo permitidos em um projeto é definido no modelo de informação de 
+rastreabilidade, que deve ser acordado antes do preenchimento da matriz. Esse modelo explicita quais relações a equipe precisa 
+registrar para responder às suas perguntas de cobertura e impacto [@gotel2012traceability, p. 13].
+No notebook deste tópico, cada linha agrupa sob o tipo genérico `realiza` um requisito, suas decisões arquiteturais, seus 
+componentes e seu teste. Essa é uma simplificação didática: a linha não especifica qual decisão se materializa em qual componente.
 
-No notebook deste tópico, cada linha agrupa sob o tipo genérico `realiza` um requisito, suas decisões, seus componentes e seu teste. É uma simplificação didática: a linha não especifica qual decisão se materializa em qual componente. Um registro mais detalhado pode tipar vínculos individuais conforme a pergunta que a equipe precisa responder:
-
+Em modelos mais detalhados, os vínculos individuais podem ser tipados conforme a pergunta que a equipe precisa responder:
 | Tipo | Origem → destino | Pergunta que responde | Exemplo |
 |---|---|---|---|
 | `satisfaz` | decisão arquitetural → requisito | Qual requisito a decisão procura atender? | DA-04 → REQ-04 |
@@ -198,13 +206,22 @@ por quê — e é essa informação que sustenta a análise de impacto. Os ident
 precisam ser únicos e estáveis: `REQ-04` continua sendo `REQ-04` quando o limiar de desempenho muda,
 o que preserva o histórico do vínculo.
 
-A criação pode ocorrer de duas formas. Na captura (*trace capture*), o vínculo é registrado no momento em que o artefato é criado; na recuperação (*trace recovery*), ele é reconstruído depois, a partir dos artefatos existentes [@gotel2012traceability, pp. 14–15]. A captura exige disciplina durante o desenvolvimento. A recuperação por técnicas de informação produz vínculos candidatos, que precisam ser revisados: falsos positivos elevam o esforço de revisão, e vínculos ausentes podem esconder impactos.
-
-É essa recuperação que Ballarín et al. (2023) investigam: o estudo compara como diferentes linguagens arquiteturais influenciam a recuperação automatizada de vínculos entre requisitos e elementos de modelos de arquitetura, usando similaridade textual. Os resultados são candidatos à validação, não uma matriz já confirmada. A matriz da clínica, por sua vez, registra associações didáticas predefinidas entre IDs; antes de usar candidatos recuperados numa matriz de projeto, a equipe deve conferir se cada relação faz sentido e registrar as aceitas [@ballarin2023influence].
+A criação pode ocorrer de duas formas. Na captura (*trace capture*), o vínculo é registrado no
+momento em que o artefato é criado; na recuperação (*trace recovery*), ele é reconstruído depois,
+a partir dos artefatos existentes [@gotel2012traceability, pp. 14–15]. A captura tende a produzir
+links mais precisos, mas exige disciplina durante o desenvolvimento. A recuperação pode ser
+automatizada por técnicas de recuperação de informação, mas gera candidatos que precisam de validação
+humana: links falsos elevam o esforço de revisão, e links ausentes podem esconder impactos [@ingram2012cost, p. 32].
 
 ### Matrizes de rastreabilidade
 
-A matriz de rastreabilidade organiza as associações entre artefatos para consulta e revisão [@gotel2012traceability]. Ela é adequada quando o número de artefatos é moderado e a equipe precisa de uma visão legível sem depender de uma ferramenta específica. A matriz abaixo desdobra as listas do notebook: cada linha é um requisito, cada coluna é uma decisão ou um componente, e `●` indica que o ID consta da lista associada ao requisito. Ela não demonstra, por si só, uma ligação direta entre uma decisão e um componente.
+A matriz de rastreabilidade é a forma mais direta de registrar uma relação de rastreamento: linhas
+e colunas representam artefatos e cada célula marca um vínculo entre eles [@gotel2012traceability, p. 7].
+Ela é adequada quando o número de artefatos é moderado e a equipe precisa de uma visão que possa ser lida
+e auditada sem depender de uma ferramenta específica; a matriz também é descrita como um arranjo
+bidimensional de itens em linhas e colunas [@nour2023traceability, p. 13]. A matriz abaixo relaciona
+os requisitos do exemplo (linhas) às decisões e aos componentes arquiteturais (colunas), usando os
+mesmos identificadores do texto e do notebook:
 
 | Requisito | DA-01 | DA-02 | DA-03 | DA-04 | DA-05 | COMP-01 | COMP-02 | COMP-03 | COMP-04 | COMP-05 | COMP-06 |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -220,7 +237,12 @@ mostra os requisitos que justificam o componente (`REQ-01`, `REQ-02` e `REQ-04`)
 Uma linha vazia indica requisito sem realização; uma coluna vazia indica elemento sem justificativa.
 Esses dois sintomas são o ponto de partida para a verificação descrita adiante.
 
-A matriz precisa de regras de atualização, não apenas de preenchimento. Ao acrescentar um requisito, a equipe adiciona uma linha e registra as associações; ao aposentar uma decisão, revisa os vínculos afetados, registra uma sucessora quando existir e preserva o histórico; ao dividir um componente, redistribui seus vínculos entre as partes pertinentes. Matrizes em planilha são viáveis em escopos pequenos, mas sua manutenção manual tem custo [@ingram2012cost].
+A matriz precisa de regras de atualização, não apenas de preenchimento.
+Ao acrescentar um requisito, a equipe adiciona uma linha e registra os links; ao aposentar uma decisão,
+os links devem apontar para a decisão sucessora e o histórico deve ser preservado; ao dividir um
+componente, o vínculo original deve ser substituído por vínculos para as partes. Matrizes em planilha
+são viáveis em escopos pequenos, mas tendem a aumentar o custo de criação e manutenção em comparação
+com ferramentas automatizadas [@ingram2012cost, p. 32].
 
 ### Rastreabilidade para frente, para trás e bidirecional
 
@@ -235,11 +257,21 @@ a consulta bidirecional percorre o mesmo caminho nos dois sentidos e verifica se
 | Para trás | decisão, componente ou teste | requisitos que o justificam | auditoria e detecção de escopo não solicitado |
 | Bidirecional | qualquer artefato | caminho completo nos dois sentidos | verificação de consistência e cobertura |
 
-A direção da consulta não se confunde com a direção do vínculo: o mesmo registro pode ser procurado a partir de qualquer uma das pontas [@gotel2012traceability]. No exemplo, a consulta para frente a partir de `REQ-04` retorna `DA-02`, `DA-04`, `COMP-02`, `COMP-03`, `COMP-06` e `TST-04`, enquanto a consulta reversa a partir de `COMP-02` retorna `REQ-01`, `REQ-02` e `REQ-04`, como mostra o notebook. Se uma consulta direta encontra `COMP-02` na linha de `REQ-04`, mas a consulta reversa não encontra `REQ-04`, é preciso revisar a consulta ou os dados; isso não exige gravar um segundo vínculo com a seta invertida.
+A direção da consulta não se confunde com a direção do vínculo: o mesmo link pode ser percorrido nos dois
+sentidos [@gotel2012traceability, p. 18]. Por isso, a verificação de consistência compara as duas direções. Se `REQ-04` alcança `COMP-06`, então `COMP-06` deve alcançar `REQ-04`;
+caso contrário, há um vínculo incompleto ou um identificador incorreto.
+No exemplo, a consulta para frente a partir de `REQ-04` retorna `DA-02`, `DA-04`, `COMP-02`, `COMP-03`,
+`COMP-06` e `TST-04`, enquanto a consulta para trás a partir de `COMP-02` retorna `REQ-01`, `REQ-02` e `REQ-04`.
+As duas respostas são compatíveis e podem ser conferidas automaticamente, como faz o notebook deste tópico.
 
 ### Manutenção dos vínculos e análise de impacto
 
-Um vínculo pode deixar de ser válido quando um dos artefatos muda. A manutenção de rastreabilidade reúne a localização dos vínculos afetados, a análise da mudança, a atualização dos registros e a verificação do resultado [@gotel2012traceability]. Ela pode ser contínua, após cada mudança, ou sob demanda, com revisão periódica. A escolha depende da frequência das mudanças e do custo de um vínculo desatualizado passar despercebido.
+Um vínculo registrado em um momento deixa de ser verdadeiro quando um dos artefatos muda.
+A manutenção de rastreabilidade é o conjunto de atividades de recuperar o vínculo, analisar
+a mudança, atualizar o registro e verificar o resultado [@gotel2012traceability, pp. 15–16].
+Ela pode ser contínua, com atualização imediatamente após cada mudança, ou sob demanda, com uma
+revisão periódica do conjunto [@gotel2012traceability, p. 16]. A escolha depende da frequência das
+mudanças e do custo de um link desatualizado passar despercebido.
 
 | Evento | Efeito nos vínculos | Ação de manutenção |
 |---|---|---|
@@ -257,7 +289,11 @@ o mesmo componente; (iv) classificar cada elemento como alterar, revisar ou apen
 ajustar o componente para o requisito que motivou a mudança e esquecer os demais requisitos
 que dependem dele.
 
-No exemplo, a mudança de `REQ-04` — de 2 segundos para 95% das consultas para 500 ms para 99% — aponta `DA-02`, `DA-04`, `COMP-02`, `COMP-03`, `COMP-06` e `TST-04` como candidatos à revisão, sem afirmar que todos precisarão ser alterados. A consulta reversa mostra que `COMP-02` também atende `REQ-01` e `REQ-02`: esses requisitos não precisam necessariamente mudar, mas a revisão do componente pode exigir regressão de `TST-01` e `TST-02`, além da atualização de `TST-04` para o novo limiar. Sem os vínculos, a equipe poderia ajustar apenas o serviço de disponibilidade e deixar o cache e o índice fora do orçamento de 500 ms. Os benefícios relatados nos estudos empíricos mapeados por Charalampidou et al. (2021) concentram-se em corretude e manutencibilidade, o que é coerente com esse uso da matriz; o custo correspondente está em criar e manter os vínculos [@charalampidou2021empirical].
+No exemplo, a mudança de `REQ-04` — de 2 segundos para 95% das consultas para 500 ms para 99% — produz o conjunto `DA-02`, `DA-04`, `COMP-02`, `COMP-03`, `COMP-06` e `TST-04`.
+A consulta reversa mostra que `COMP-02` também atende `REQ-01` e `REQ-02`: esses requisitos não precisam ser alterados, mas seus testes passam a ser pontos de regressão.
+Sem os vínculos, a equipe poderia ajustar apenas o serviço de disponibilidade e deixar o cache e o índice fora do orçamento de 500 ms.
+Os benefícios relatados nos estudos empíricos mapeados por Charalampidou et al. (2021) concentram-se em corretude e manutencibilidade,
+o que é coerente com esse uso da matriz; o custo correspondente está em criar e manter os vínculos [@charalampidou2021empirical].
 
 ### Identificação de vínculos inválidos ou desatualizados
 
@@ -272,7 +308,10 @@ A manutenção só é confiável se houver verificação. Um conjunto pequeno de
 | Consistência das consultas | a busca direta encontra um par, mas a reversa não | corrigir a consulta, o índice ou o registro |
 | Precisão de links recuperados | similaridade baixa ou relação sem sentido | revisar manualmente e descartar falsos positivos |
 
-Parte dessas verificações pode ser automatizada: consultas à matriz, regras no repositório e conferência durante a revisão de um pull request. A validade semântica, porém, não se resolve apenas com checagens estruturais. Ballarín et al. (2023) mostram que a qualidade dos vínculos recuperados varia com a linguagem arquitetural utilizada; por isso, candidatos automáticos precisam de revisão antes de apoiar uma decisão [@ballarin2023influence].
+Parte dessas verificações pode ser automatizada: consultas à matriz, regras no repositório e conferência durante a revisão de um pull request.
+O que não pode ser automatizado é a validade semântica do vínculo, que exige revisão humana.
+Ballarín et al. (2023) mostram que a qualidade dos vínculos recuperados varia com a linguagem arquitetural utilizada,
+o que reforça a necessidade de conferir os vínculos automáticos antes de usá-los em uma decisão [@ballarin2023influence, pp. 705–706].
 
 ### Ferramentas de apoio
 

@@ -12,6 +12,7 @@ bibliography: referencias.bib
 format:
   revealjs:
     theme: default
+    css: slides.css
     lang: pt-BR
     slide-number: c/t
     slide-level: 2
@@ -21,23 +22,23 @@ format:
     footer: "Guia Aberto de Arquitetura de Software · CC BY-NC 4.0"
 ---
 
-## Rastreabilidade entre Requisitos e Arquitetura
-
-### Relações, técnicas e acompanhamento das decisões arquiteturais
-
-**Guia Aberto de Arquitetura de Software**
-
-::: {.notes}
-Apresentar o tema, os integrantes e a proposta da apresentação.
-:::
-
 ## Roteiro
 
-1. O problema e os fundamentos da rastreabilidade
-2. Relação entre requisitos e arquitetura
-3. Técnicas e ferramentas de rastreabilidade
-4. Exemplo aplicado e análise de impacto
-5. Benefícios, custos e critérios de decisão
+1. Problema, requisitos e arquitetura
+2. Técnicas e matriz de rastreabilidade
+3. Clínica: mudança de `REQ-04`
+4. Artigo: abordagem, avaliação e resultados
+5. Limites, crítica e relação com o guia
+6. Trade-offs, adoção e conclusão
+
+::: {.notes}
+Os fundamentos ficam com o primeiro integrante; a relação com a
+arquitetura, com o segundo; as técnicas, com o terceiro; a clínica e o
+notebook, com o quarto. Na parte final, retomar o artigo, discutir seus
+limites e aplicar a crítica aos trade-offs do guia.
+Na capa, apresentar os cinco autores na ordem registrada em
+metadata.yaml e explicar que Ballarín et al. (2023) é o artigo principal.
+:::
 
 ## O problema da falta de rastreabilidade
 
@@ -307,6 +308,42 @@ Ao consultar os relacionamentos, o notebook identifica duas decisões arquitetur
 Dessa forma, em vez de procurar manualmente em todo o sistema, a equipe utiliza os vínculos registrados para identificar os possíveis impactos da mudança.
 :::
 
+
+## Artigo principal: abordagem e avaliação
+
+- Ballarín et al. (2023): **11 linguagens arquiteturais**.
+- Caso industrial ferroviário da **CAF**, com 16 requisitos.
+- Recuperação de vínculos por similaridade textual (**LSI**).
+- Comparação com vínculos aprovados; métricas de precisão,
+  revocação, F-measure e MCC. [@ballarin2023influence]
+
+::: {.notes}
+Explicar a passagem do exemplo da clínica para a pesquisa: o artigo
+pergunta se a linguagem usada para modelar a arquitetura influencia
+a recuperação automática dos vínculos com requisitos. A equipe da
+CAF forneceu requisitos, modelos e vínculos aprovados para comparação.
+O procedimento usa a mesma abordagem RTAL baseada em LSI para as
+linguagens avaliadas. As métricas avaliam os vínculos recuperados;
+não medem o desempenho do sistema da clínica.
+:::
+
+## Resultados e limites do estudo
+
+- No caso estudado, linguagens de **propósito geral/pesquisa**
+  tiveram os melhores indicadores médios.
+- Nesse grupo: precisão média **0,51** e revocação média **0,38**.
+- Os autores pedem replicação em outros estudos de caso.
+- O parâmetro da LSI foi mantido fixo para comparar linguagens.
+
+::: {.notes}
+Precisão é a parcela dos vínculos recuperados que estava correta;
+revocação é a parcela dos vínculos corretos que foi recuperada.
+Os valores 0,51 e 0,38 são médias do grupo de linguagens de
+propósito geral/pesquisa no caso da CAF, não valores da clínica nem
+garantia de desempenho em qualquer projeto. A seção de ameaças à
+validade reconhece a necessidade de replicação e que a escolha do
+parâmetro k na LSI pode influenciar a acurácia [@ballarin2023influence].
+:::
 
 ## Artigo principal: abordagem e avaliação
 
